@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ChatUI</string>
+    <string name="paired_devices">페어링된 디바이스</string>
+    <string name="select_device_request_message">
+        연결하려는 디바이스를 선택해주세요
+    </string>
+</resources>
