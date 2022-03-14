@@ -1,4 +1,4 @@
-package com.example.chatui.recyclerviews.adapters
+package com.example.bluetoothchat.recyclerviews.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.Group
 import androidx.recyclerview.widget.RecyclerView
-import com.example.chatui.R
-import com.example.chatui.recyclerviews.items.ChatItem
+import com.example.bluetoothchat.R
+import com.example.bluetoothchat.recyclerviews.items.ChatItem
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

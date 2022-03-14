@@ -1,19 +1,19 @@
 package com.example.chatui.recyclerviews.adapters
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatui.R
-import com.example.chatui.recyclerviews.items.DeviceRecyclerViewItem
+import com.example.chatui.recyclerviews.items.DeviceItem
 
 class DeviceRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<DeviceRecyclerViewAdapter.ViewHolder>() {
-    private val deviceRecyclerViewItems by lazy { ArrayList<DeviceRecyclerViewItem>() }
+    private val deviceItems by lazy { ArrayList<DeviceItem>() }
     private lateinit var onItemClickListener: OnItemClickListener
     private var startOffsetValue: Long = 0
 
@@ -42,26 +42,26 @@ class DeviceRecyclerViewAdapter(private val context: Context) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val item = deviceRecyclerViewItems[position]
-        viewHolder.imageView.setImageDrawable(item.image)
+        val item = deviceItems[position]
+        viewHolder.imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_remote_device_48))
         viewHolder.nameView.text = item.name
         viewHolder.addressView.text = item.address
     }
 
-    override fun getItemCount() = deviceRecyclerViewItems.size
+    override fun getItemCount() = deviceItems.size
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         onItemClickListener = listener
     }
 
-    fun addItem(image: Drawable?, name: String?, address: String) {
-        val item = DeviceRecyclerViewItem(image, name, address)
-        deviceRecyclerViewItems.add(item)
-        notifyDataSetChanged()
+    fun addItem(name: String?, address: String) {
+        val item = DeviceItem(name, address)
+        deviceItems.add(item)
+        notifyItemInserted(deviceItems.size-1)
     }
 
     fun clear() {
-        deviceRecyclerViewItems.clear()
+        deviceItems.clear()
         startOffsetValue = 0
         notifyDataSetChanged()
     }

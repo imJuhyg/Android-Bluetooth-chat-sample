@@ -25,12 +25,8 @@ class MainActivity : AppCompatActivity() {
         val animation = AnimationUtils.loadAnimation(this, R.anim.to_top_from_bottom_2)
         binding.pairedDeviceRecyclerView.animation = animation
 
-        // Sample
-        deviceRecyclerViewAdapter.addItem(
-            ContextCompat.getDrawable(this, R.drawable.icon_remote_device_48),
-            "Remote device",
-            "11:AA:22:BB:33:CC"
-        )
+        // Sample Data
+        deviceRecyclerViewAdapter.addItem("Remote device", "11:AA:22:BB:33:CC")
     }
 
     override fun onResume() {

@@ -22,8 +22,6 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        overridePendingTransition(R.anim.to_top_from_bottom_1, R.anim.none)
-
         deviceName = intent.getStringExtra("DEVICE_NAME")
         deviceAddress = intent.getStringExtra("DEVICE_ADDRESS")
 
@@ -32,7 +30,6 @@ class ChatActivity : AppCompatActivity() {
             chatView.layoutManager = LinearLayoutManager(this@ChatActivity)
             chatView.adapter = chatRecyclerViewAdapter
 
-            // Test stub
             // set device panel
             imageView.setImageDrawable(ContextCompat.getDrawable(this@ChatActivity, R.drawable.icon_remote_device_48))
             nameTextView.text = deviceName!!
@@ -62,7 +59,7 @@ class ChatActivity : AppCompatActivity() {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
                     text?.let {
-                        if(it.length > 0) {
+                        if(it.isNotEmpty()) {
                             isButtonAccessible = true
                             sendBtnImageView.visibility = View.GONE
                             btnSend.visibility = View.VISIBLE

@@ -10,13 +10,17 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.bluetoothchat.adapter.DeviceRecyclerViewAdapter
+import com.example.bluetoothchat.recyclerviews.adapters.DeviceRecyclerViewAdapter
 import com.example.bluetoothchat.databinding.ActivityMainBinding
 import kotlin.system.exitProcess
 
@@ -26,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var bluetoothAdapter: BluetoothAdapter? = null
     private var hasPermission = false
     private lateinit var pairedDevices: ArrayList<BluetoothDevice>
+    private lateinit var activityLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +40,9 @@ class MainActivity : AppCompatActivity() {
         // 페어링된 기기 목록을 나타내는 리사이클러 뷰 입니다.
         binding.pairedDeviceRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.pairedDeviceRecyclerView.adapter = deviceRecyclerViewAdapter
+
+        val animation = AnimationUtils.loadAnimation(this, R.anim.to_top_from_bottom_2)
+        binding.pairedDeviceRecyclerView.animation = animation
 
         // bluetoothAdapter = BluetoothAdapter.getDefaultAdapter() // Deprecated!
         bluetoothAdapter = (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
@@ -67,12 +75,32 @@ class MainActivity : AppCompatActivity() {
                 pairedDevice.address
             )
         }
+
+        activityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if(result.resultCode == RESULT_CANCELED) {
+                // 페어링된 디바이스 목록 새로고침
+                deviceRecyclerViewAdapter.clear()
+                pairedDevices = ArrayList(bluetoothAdapter!!.bondedDevices)
+                for(pairedDevice in pairedDevices) {
+                    deviceRecyclerViewAdapter.addItem(
+                        pairedDevice.name ?: pairedDevice.address,
+                        pairedDevice.address
+                    )
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
-        // 리사이클러 뷰 아이템 클릭 리스너
+        // 블루투스 인텐트
+        binding.btnSearch.setOnClickListener {
+            val intent = Intent(Settings.ACTION_BLUETOOTH_SETTINGS)
+            activityLauncher.launch(intent)
+        }
+
+        // 디바이스 연결 요청
         deviceRecyclerViewAdapter.setOnItemClickListener(object: DeviceRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val recyclerViewItem = deviceRecyclerViewAdapter.getItem(position)
@@ -87,7 +115,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-
     }
 
     @RequiresApi(31)
