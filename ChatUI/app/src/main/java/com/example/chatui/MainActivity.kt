@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatui.databinding.ActivityMainBinding
 import com.example.chatui.recyclerviews.adapters.DeviceRecyclerViewAdapter
