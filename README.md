@@ -81,19 +81,19 @@
 1. ChatActivity의 레이아웃에 RecyclerView를 적절하게 배치해 주세요.
 ```xml
 <!-- activity_chat.xml -->
+
 <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/paired_device_recycler_view"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:layout_marginStart="14dp"
-    android:layout_marginEnd="14dp"
-    app:layout_constraintLeft_toLeftOf="@id/recycler_view_frame"
-    app:layout_constraintRight_toRightOf="@id/recycler_view_frame"
-    app:layout_constraintTop_toBottomOf="@id/subtitle"
-    app:layout_constraintBottom_toBottomOf="@id/recycler_view_frame"/>
+        android:id="@+id/chat_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintTop_toBottomOf="@id/remote_device_panel"
+        app:layout_constraintBottom_toTopOf="@+id/panel_margin">
+</androidx.recyclerview.widget.RecyclerView>
 ```
 
-2. 채팅UI를 구성하는 리사이클러뷰의 레이아웃을 생성해 주세요.
+2. 채팅UI를 구성하는 RecyclerView의 레이아웃을 생성해 주세요.
 * 채팅UI는 보내는 쪽의 뷰와 받은 쪽의 뷰를 따로 구성해야합니다.
 * 보내는 쪽의 텍스트 뷰는 오른쪽, 받는 쪽의 텍스트 뷰는 왼쪽으로 배치합니다. 그러고나서 메시지를 보낼 때는 보내는 쪽의 텍스트 뷰만 표시하고 받는 쪽의 텍스트 뷰는 숨겨야 합니다. 반대의 경우에도 한 쪽은 숨기고 한 쪽만 표시합니다. 이는 뷰의 visibility 속성을 이용하면 편리합니다.  
 
@@ -176,7 +176,7 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-1. RecyclerView Adapter 구현  
+3. RecyclerView Adapter 구현  
 * 먼저 RecyclerView에 사용될 데이터 클래스가 생성되어 있어야합니다. ChatRecyclerView에 사용될 데이터는 보내는 쪽/받는 쪽 방향을 구분할 수 있도록 하는 direction 변수와 message, 보낸 시간/받은 시간을 기록하는 time변수가 있습니다.
 ``` kotlin
 data class ChatItem(val direction: Int, val message: String, val time: Long)
@@ -218,7 +218,7 @@ override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 }
 ```
 
-* onBindViewHolder 메소드를 오버라이드하여 뷰홀더 객체에 데이터를 바인딩합니다. 데이터를 연결할 때 direction으로 구분하여 보내는 경우, receiveLayout의 뷰들은 숨기고 sendLayout의 뷰들만 표시합니다. 반대의 경우도 한 쪽 뷰 그룹은 숨겨야 합니다.
+* onBindViewHolder 메소드를 오버라이드하여 뷰홀더 객체에 데이터를 바인딩합니다. 데이터를 연결할 때 direction으로 구분하여, 보내는 경우 receiveLayout의 뷰들은 숨기고 sendLayout의 뷰들만 표시합니다. 반대의 경우도 한 쪽 뷰 그룹은 숨겨야 합니다.
 
 ``` kotlin
 override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
@@ -250,7 +250,7 @@ override fun getItemCount() = chatItems.size
 ```
 
 * 액티비티에서 RecyclerView에 데이터를 추가할 수 있도록 addItem 메소드를 생성해 주세요. 
-아이템 셋에 데이터를 추가한 후 notifyItemInserted 메소드를 사용하면 RecyclerView는 데이터가 추가된 것을 알고 onBindViewHolder 메소드를 호출시킵니다. 아래 코드처럼 notifyItemInserted 메소드를 사용한 경우 RecyclerView의 맨 아래 항목에 데이터를 추가합니다. 이외에도 아이템이 변동되는 경우 notifyDataSetChanged(), 아이템이 삭제되는 경우 notifyItemRemoved() 메소드를 사용할 수 있습니다.
+아이템 셋에 데이터를 추가한 후 notifyItemInserted 메소드를 사용하면 RecyclerView는 데이터가 추가된 것을 알고 onBindViewHolder 메소드를 호출시킵니다. 아래 코드처럼 notifyItemInserted 메소드를 사용한 경우 RecyclerView의 맨 아래 항목에 데이터를 추가합니다. 이외에도, 아이템이 변동되는 경우 notifyDataSetChanged(), 아이템이 삭제되는 경우 notifyItemRemoved() 메소드를 사용할 수 있습니다.
 ``` kotlin
 fun addItem(direction: Int, message: String, time: Long) {
     val item = ChatItem(direction, message, time)
@@ -259,7 +259,7 @@ fun addItem(direction: Int, message: String, time: Long) {
 }
 ```
 
-1. 추가적으로 RecyclerView에 아이템 클릭 이벤트를 추가하고 싶은 경우 다음처럼 구현할 수 있습니다.
+4. 추가적으로 RecyclerView에 아이템 클릭 이벤트를 추가하고 싶은 경우 다음처럼 구현할 수 있습니다.
 
 * 먼저 RecyclerViewAdapter 내부에 OnItemClickListener에 대한 인터페이스를 구현합니다.
 ``` kotlin
