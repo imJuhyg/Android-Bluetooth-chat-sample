@@ -15,7 +15,6 @@ import com.example.chatui.recyclerviews.items.DeviceItem
 class DeviceRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<DeviceRecyclerViewAdapter.ViewHolder>() {
     private val deviceItems by lazy { ArrayList<DeviceItem>() }
     private lateinit var onItemClickListener: OnItemClickListener
-    private var startOffsetValue: Long = 0
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int)
@@ -62,7 +61,6 @@ class DeviceRecyclerViewAdapter(private val context: Context) : RecyclerView.Ada
 
     fun clear() {
         deviceItems.clear()
-        startOffsetValue = 0
         notifyDataSetChanged()
     }
 }

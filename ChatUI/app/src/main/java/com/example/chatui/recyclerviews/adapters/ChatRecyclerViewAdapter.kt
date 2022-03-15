@@ -64,6 +64,7 @@ class ChatRecyclerViewAdapter : RecyclerView.Adapter<ChatRecyclerViewAdapter.Vie
         val item = ChatItem(direction, message, time)
         chatItems.add(item)
         notifyItemInserted(chatItems.size-1)
+
     }
 
     private fun formatTime(time: Long) = SimpleDateFormat("kk:mm:ss", Locale.getDefault()).format(time)
