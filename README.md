@@ -443,6 +443,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
+### Communication Thread 구현
 * 연결에 성공해서 얻은 rfcommSocket 객체를 가지고 CommunicationThread를 생성해서 데이터 교환 로직을 설계해야 합니다. 먼저 소켓을 통해 InputStream, OutputStream을 생성하고 데이터를 실을 버퍼를 생성합니다.
 ``` kotlin
 class ClientCommunicationThread(
