@@ -291,7 +291,8 @@ fun setOnItemClickListener(listener: OnItemClickListener) {
     onItemClickListener = listener
 }
 ```
-
+ 
+ 
 * 이제 액티비티에서 아래처럼 아이템 클릭 리스너를 호출할 수 있습니다.
 ``` kotlin
 myRecyclerViewAdapter.setOnItemClickListener(object: MyRecyclerViewAdapter.OnItemClickListener {
