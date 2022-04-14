@@ -96,13 +96,6 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
-        connectThread = ClientConnectThread(bluetoothDevice!!, messageHandler)
-        connectThread!!.start()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
         // 키보드 팝업시 자동 스크롤
         binding.apply {
             chatView.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
@@ -150,6 +143,9 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
         }
+
+        connectThread = ClientConnectThread(bluetoothDevice!!, messageHandler)
+        connectThread!!.start()
     }
 
     override fun onDestroy() {

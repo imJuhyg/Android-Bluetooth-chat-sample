@@ -89,10 +89,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         // 블루투스 인텐트
         binding.btnSearch.setOnClickListener {
