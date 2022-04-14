@@ -328,27 +328,24 @@ myRecyclerView.smoothScrollToPosition(myRecyclerViewAdapter.itemCount-1)
 
 * RecyclerView에 항목을 추가하고 싶은 경우 구현한 addItem 메소드를 사용하면 됩니다. 이제 RecyclerView는 필요할 때마다 동적으로 항목을 생성하게됩니다.
 ``` kotlin
-override fun onResume() {
-    super.onResume()
-    binding.btnSend.setOnClickListener {
-        val sendMessage = binding.editText.text.toString()
-        // 보내는 방향
-        chatRecyclerViewAdapter.addItem(
-            ChatRecyclerViewAdapter.DIRECTION_SEND, 
-            sendMessage, 
-            System.currentTimeMillis()
-        )
+binding.btnSend.setOnClickListener {
+    val sendMessage = binding.editText.text.toString()
+    // 보내는 방향
+    chatRecyclerViewAdapter.addItem(
+        ChatRecyclerViewAdapter.DIRECTION_SEND, 
+        sendMessage, 
+        System.currentTimeMillis()
+    )
 
-        // 받는 방향
-        val receivedMessage = sendMessage // Sample
-        chatRecyclerViewAdapter.addItem(
-            ChatRecyclerViewAdapter.DIRECTION_RECEIVE, 
-            receivedMessage, 
-            System.currentTimeMillis()
-        )
+    // 받는 방향
+    val receivedMessage = sendMessage // Sample
+    chatRecyclerViewAdapter.addItem(
+        ChatRecyclerViewAdapter.DIRECTION_RECEIVE, 
+        receivedMessage, 
+        System.currentTimeMillis()
+    )
 
-        chatView.smoothScrollToPosition(chatRecyclerViewAdapter.itemCount-1)
-    }
+    chatView.smoothScrollToPosition(chatRecyclerViewAdapter.itemCount-1)
 }
 ```
 
@@ -536,23 +533,17 @@ messageHandler = object: Handler(Looper.getMainLooper()) {
 
 * EditText에 입력된 문자열 데이터를 가지고 CommunicationThread에 정의된 write() 메소드를 아래처럼 사용할 수 있습니다.
 ``` kotlin
-override fun onResume() {
-    super.onResume()
+// 메시지 전송
+binding.apply {
+    btnSend.setOnClickListener {
+        // Update chat view
+        if(isButtonAccessible) {
+            val sendMessage = editText.text.toString()
+            chatRecyclerViewAdapter.addItem(DIRECTION_SEND, sendMessage, System.currentTimeMillis())
+            chatView.smoothScrollToPosition(chatRecyclerViewAdapter.itemCount-1) // 자동 스크롤
+            editText.setText("")
 
-    // ... //
-
-    // 메시지 전송
-    binding.apply {
-        btnSend.setOnClickListener {
-            // Update chat view
-            if(isButtonAccessible) {
-                val sendMessage = editText.text.toString()
-                chatRecyclerViewAdapter.addItem(DIRECTION_SEND, sendMessage, System.currentTimeMillis())
-                chatView.smoothScrollToPosition(chatRecyclerViewAdapter.itemCount-1) // 자동 스크롤
-                editText.setText("")
-
-                communicationThread!!.write(sendMessage.toByteArray(Charsets.UTF_8))
-            }
+            communicationThread!!.write(sendMessage.toByteArray(Charsets.UTF_8))
         }
     }
 }
